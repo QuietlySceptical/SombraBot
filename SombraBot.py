@@ -4,7 +4,7 @@ from discord.ext import commands
 
 description = '''Sombra - A Simple Discord Bot'''
 
-bot = commands.Bot(command_prefix='.',
+bot = commands.Bot(command_prefix='-',
                    description=description)
 
 
@@ -16,16 +16,32 @@ async def on_ready():
     print('------')
 
 
-@bot.command()
+@bot.command(description='adds two numbers')
 async def add(left: int, right: int):
-    """Adds two numbers together"""
     await bot.say(left + right)
 
 
 @bot.command(description='makes a choice')
 async def choose(*choices: str):
-    """Chooses between multiple choices"""
     await bot.say(random.choice(choices))
+
+
+@bot.command(description='have a compliment')
+async def compliment():
+    lines = open("data/compliment.txt").read().splitlines()
+    await  bot.say(random.choice(lines))
+
+
+@bot.command(description='have an insult')
+async def insult():
+    lines = open("data/insult.txt").read().splitlines()
+    await  bot.say(random.choice(lines))
+
+
+@bot.command(description='8 ball')
+async def eightball():
+    lines = open("data/eightball.txt").read().splitlines()
+    await bot.say(random.choice(lines))
 
 
 try:
