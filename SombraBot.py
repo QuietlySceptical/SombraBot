@@ -1,7 +1,5 @@
 import asyncio
-import json
 import random
-from wsgiref import headers
 
 import requests
 import discord
@@ -85,13 +83,46 @@ async def hug(member: discord.Member):
 
 
 @bot.command(description='Average player stats for Overwatch user')
-async def owaverage(username: str):
+async def owquickplay(username: str):
     api_url = 'https://owapi.net/api/v3/u/{0}/stats'
     battlenet = username.replace('#', '-')
     headers = {'User-agent': 'SombraBot'}
 
     status = requests.get(api_url.format(battlenet), headers=headers)
+    data = status.json()
     print(status)
+
+    prestige = data['eu']['stats']['quickplay']['overall_stats']['prestige']
+    level = data['eu']['stats']['quickplay']['overall_stats']['level']
+    time_played = data['eu']['stats']['quickplay']['game_stats']['time_played']
+    wins = data['eu']['stats']['quickplay']['overall_stats']['wins']
+    eliminations_avg = data['eu']['stats']['quickplay']['average_stats']['eliminations_avg']
+    killperdeath = data['eu']['stats']['quickplay']['game_stats']['kpd']
+    healing_done_avg = data['eu']['stats']['quickplay']['average_stats']['healing_done_avg']
+    offensive_assists_avg = data['eu']['stats']['quickplay']['average_stats']['offensive_assists_avg']
+    defensive_assists_avg = data['eu']['stats']['quickplay']['average_stats']['defensive_assists_avg']
+    damage_done_avg = data['eu']['stats']['quickplay']['average_stats']['damage_done_avg']
+    deaths_avg = data['eu']['stats']['quickplay']['average_stats']['deaths_avg']
+    time_spent_on_fire_avg = data['eu']['stats']['quickplay']['average_stats']['time_spent_on_fire_avg']
+
+    await bot.say('```Quick Play stats for {0}\n'
+                  'Presitige: {1}\n'
+                  'Level: {2}\n'
+                  'Time Played: {3}\n'
+                  'Wins: {4}\n\n'
+                  'Avg Eliminations: {5}\n'
+                  'KPD: {6}\n'
+                  'Avg Healing Done: {7}\n'
+                  'Avg Offensive Assists: {8}\n'
+                  'Avg Defensive Assists: {9}\n'
+                  'Avg Damage Done: {10}\n'
+                  'Avg Deaths: {11}\n'
+                  'Avg Time on Fire: {12}\n'
+                  '```'
+                  .format(username, prestige, level, time_played, wins, eliminations_avg,
+                          killperdeath, healing_done_avg, offensive_assists_avg, defensive_assists_avg,
+                          damage_done_avg, deaths_avg, time_spent_on_fire_avg))
+
 
 try:
     bot.run('token')
