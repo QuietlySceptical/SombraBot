@@ -9,6 +9,7 @@ description = '''Sombra - A Simple Discord Bot'''
 bot = commands.Bot(command_prefix='-',
                    description=description)
 
+
 @bot.event
 async def on_ready():
     print('Logged in as')
@@ -41,9 +42,9 @@ async def insult():
 
 
 @bot.command(description='8 ball')
-async def eightball():
+async def eightball(*message: str):
     lines = open("data/eightball.txt").read().splitlines()
-    await bot.say('Let me look into the future')
+    await bot.say('So you want to know: ' + ' ' .join(map(str, message)) + '\n ...Let me look into the future')
     await asyncio.sleep(3)
     await bot.say(random.choice(lines))
 
@@ -64,6 +65,20 @@ async def flip():
     await asyncio.sleep(3)
     await bot.say('The coin shows, ' + outcome)
 
+
+@bot.command()
+async def hug(member: discord.Member):
+    name = member.name
+    hug = random.randrange(0, 3)
+    if hug == 0:
+        message = '(づ｡◕‿‿◕｡)づ ' + name
+    elif hug == 1:
+        message = '(っ˘̩╭╮˘̩)っ ' + name
+    elif hug == 2:
+        message = '(っಠ‿ಠ)っ ' + name
+    elif hug == 3:
+        message = '(づ￣ ³￣)づ ' + name
+    await bot.say(message)
 
 try:
     bot.run('token')
