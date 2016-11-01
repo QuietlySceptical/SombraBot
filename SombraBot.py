@@ -1,6 +1,9 @@
 import asyncio
+import json
 import random
+from wsgiref import headers
 
+import requests
 import discord
 from discord.ext import commands
 
@@ -79,6 +82,16 @@ async def hug(member: discord.Member):
     elif hug == 3:
         message = '(づ￣ ³￣)づ ' + name
     await bot.say(message)
+
+
+@bot.command(description='Average player stats for Overwatch user')
+async def owaverage(username: str):
+    api_url = 'https://owapi.net/api/v3/u/{0}/stats'
+    battlenet = username.replace('#', '-')
+    headers = {'User-agent': 'SombraBot'}
+
+    status = requests.get(api_url.format(battlenet), headers=headers)
+    print(status)
 
 try:
     bot.run('token')
