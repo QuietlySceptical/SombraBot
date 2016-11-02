@@ -10,6 +10,8 @@ description = '''Sombra - A Simple Discord Bot'''
 bot = commands.Bot(command_prefix='-',
                    description=description)
 
+client = discord.Client()
+
 
 @bot.event
 async def on_ready():
@@ -18,6 +20,23 @@ async def on_ready():
     print(bot.user.id)
     print('------')
     await bot.change_presence(game=discord.Game(name='Game Title'))
+
+
+@bot.event
+async def on_message(message):
+    print('test')
+    if message.author == client.user:
+        return
+
+    if message.content.startswith('Hello Sombra'):
+        msg = 'Hello {0.author.mention}'.format(message)
+        await bot.send_message(message.channel, msg)
+    elif message.content.startswith('Sombra'):
+        msg = 'You called for me?'.format(message)
+        await bot.send_message(message.channel, msg)
+    elif message.content.startswith('-compliment'):
+        compliment
+    await bot.process_commands(message)
 
 
 @bot.command(description='adds two numbers')
