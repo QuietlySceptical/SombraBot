@@ -8,7 +8,7 @@ from discord.ext import commands
 description = '''Sombra - A Simple Discord Bot'''
 
 bot = commands.Bot(command_prefix='-',
-                   description=description)
+                   description=description, pm_help=True)
 
 client = discord.Client()
 
@@ -34,35 +34,45 @@ async def on_message(message):
     elif message.content.startswith('Sombra'):
         msg = 'You called for me?'.format(message)
         await bot.send_message(message.channel, msg)
-    elif message.content.startswith('-compliment'):
-        compliment
+    elif message.content.startswith('Oberwath'):
+        msg = 'Darling, call it Overwatch'
+        await bot.send_message(message.channel, msg)
+    elif message.content == '@everyone':
+        msg = 'Hey kids, anyone want to buy some drugs?'
+        await bot.send_message(message.channel, msg)
+
     await bot.process_commands(message)
 
 
-@bot.command(description='adds two numbers')
+@bot.command()
 async def add(left: int, right: int):
+    """Adds two number together"""
     await bot.say(left + right)
 
 
-@bot.command(description='makes a choice')
+@bot.command()
 async def choose(*choices: str):
+    """Chooses between items in a list"""
     await bot.say(random.choice(choices))
 
 
-@bot.command(description='have a compliment')
+@bot.command()
 async def compliment():
+    """Gives a random compliment"""
     lines = open("data/compliment.txt").read().splitlines()
     await  bot.say(random.choice(lines))
 
 
-@bot.command(description='have an insult')
+@bot.command()
 async def insult():
+    """Gives a random insult"""
     lines = open("data/insult.txt").read().splitlines()
     await  bot.say(random.choice(lines))
 
 
-@bot.command(description='8 ball')
+@bot.command()
 async def eightball(*message: str):
+    """Ask a question and the EightBall will give an answer"""
     lines = open("data/eightball.txt").read().splitlines()
     await bot.say('So you want to know: ' + ' ' .join(map(str, message)) + '\n ...Let me look into the future')
     await asyncio.sleep(3)
@@ -74,8 +84,9 @@ async def porn():
     await bot.say('Look for it yourself!')
 
 
-@bot.command(decription='A coin toss')
+@bot.command()
 async def flip():
+    """Flips a coin, resulting in Heads or Tails"""
     outcome = random.randint(0, 1)
     if outcome == 0:
         outcome = "Heads"
@@ -88,6 +99,7 @@ async def flip():
 
 @bot.command()
 async def hug(member: discord.Member):
+    """Have a hug"""
     name = member.name
     hug = random.randrange(0, 3)
     if hug == 0:
@@ -101,8 +113,10 @@ async def hug(member: discord.Member):
     await bot.say(message)
 
 
-@bot.command(description='Average player stats for Overwatch user')
+@bot.command()
 async def owquick(username: str):
+    """Overwatch Quick Play stats for a given player
+    e.g. -owquick Hanzo#1234"""
     api_url = 'https://owapi.net/api/v3/u/{0}/stats'
     battlenet = username.replace('#', '-')
     headers = {'User-agent': 'SombraBot'}
@@ -145,6 +159,8 @@ async def owquick(username: str):
 
 @bot.command(description='Average player stats for Overwatch user')
 async def owcomp(username: str):
+    """Overwatch Competitive stats for a given player
+        e.g. -owcomp McCree#1234"""
     api_url = 'https://owapi.net/api/v3/u/{0}/stats'
     battlenet = username.replace('#', '-')
     headers = {'User-agent': 'SombraBot'}
