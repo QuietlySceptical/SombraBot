@@ -7,7 +7,7 @@ from discord.ext import commands
 
 description = '''Sombra - A Simple Discord Bot'''
 
-bot = commands.Bot(command_prefix='-',
+bot = commands.Bot(command_prefix='.',
                    description=description, pm_help=True)
 
 client = discord.Client()
@@ -34,10 +34,10 @@ async def on_message(message):
     elif message.content.startswith('Sombra'):
         msg = 'You called for me?'.format(message)
         await bot.send_message(message.channel, msg)
-    elif message.content.startswith('Oberwath'):
+    elif 'Oberwath' or 'oberwath' in message.content:
         msg = 'Darling, call it Overwatch'
         await bot.send_message(message.channel, msg)
-    elif message.content == '@everyone':
+    elif '@everyone' in message.content:
         msg = 'Hey kids, anyone want to buy some drugs?'
         await bot.send_message(message.channel, msg)
 
