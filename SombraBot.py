@@ -34,11 +34,24 @@ async def on_message(message):
     elif message.content.startswith('Sombra'):
         msg = 'You called for me?'.format(message)
         await bot.send_message(message.channel, msg)
-    elif 'Oberwath' or 'oberwath' in message.content:
+
+    elif 'oberwath' in message.content.lower():
         msg = 'Darling, call it Overwatch'
         await bot.send_message(message.channel, msg)
+
     elif '@everyone' in message.content:
         msg = 'Hey kids, anyone want to buy some drugs?'
+        await client.send_message(message.channel, msg)
+
+    elif '@241161319821082625' in message.content:  # Sombra
+        with open('res/sombra.jpg', 'rb') as sombrapic:
+            await bot.send_file(message.channel, sombrapic)
+
+    elif '@146342721366392832' in message.content:  # Caffy
+        msg = 'http://i.imgur.com/7JzpTQF.jpg'
+        await bot.send_message(message.channel, msg)
+    elif '@190912312427675649' in message.content:  # Thirith
+        msg = 'I heard you like Guys & Dolls?'
         await bot.send_message(message.channel, msg)
 
     await bot.process_commands(message)
@@ -130,7 +143,7 @@ async def owquick(username: str):
     time_played = data['eu']['stats']['quickplay']['game_stats']['time_played']
     wins = data['eu']['stats']['quickplay']['overall_stats']['wins']
     eliminations_avg = data['eu']['stats']['quickplay']['average_stats']['eliminations_avg']
-    killperdeath = data['eu']['stats']['quickplay']['game_stats']['kpd']
+    killsperdeath = data['eu']['stats']['quickplay']['game_stats']['kpd']
     healing_done_avg = data['eu']['stats']['quickplay']['average_stats']['healing_done_avg']
     offensive_assists_avg = data['eu']['stats']['quickplay']['average_stats']['offensive_assists_avg']
     defensive_assists_avg = data['eu']['stats']['quickplay']['average_stats']['defensive_assists_avg']
@@ -153,7 +166,7 @@ async def owquick(username: str):
                   'Avg Time on Fire: {12}\n'
                   '```'
                   .format(username, prestige, level, time_played, wins, eliminations_avg,
-                          killperdeath, healing_done_avg, offensive_assists_avg, defensive_assists_avg,
+                          killsperdeath, healing_done_avg, offensive_assists_avg, defensive_assists_avg,
                           damage_done_avg, deaths_avg, time_spent_on_fire_avg))
 
 
