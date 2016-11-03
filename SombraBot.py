@@ -19,7 +19,6 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
-    await bot.change_presence(game=discord.Game(name='Game Title'))
 
 
 @bot.event
@@ -234,7 +233,18 @@ async def penguin():
     await bot.say(info.content.decode('ascii'))
 
 
+async def my_background_task():
+    await bot.wait_until_ready()
+    counter = 0
+    while not client.is_closed:
+        counter += 1
+        lines = open("data/playing.txt").read().splitlines()
+        playing = random.choice(lines)
+        await bot.change_presence(game=discord.Game(name=playing))
+        await asyncio.sleep(120)  # task runs every 120 seconds
+
 try:
+    bot.loop.create_task(my_background_task())
     bot.run('token')
 except KeyError:
     print("Environment variable not found.")
