@@ -4,6 +4,7 @@ import random
 import requests
 import discord
 from discord.ext import commands
+from imgurpython import ImgurClient
 
 description = '''Sombra - A Simple Discord Bot'''
 
@@ -11,7 +12,7 @@ bot = commands.Bot(command_prefix='.',
                    description=description, pm_help=True)
 
 client = discord.Client()
-
+imgurclient = ImgurClient('id', 'secret')
 
 @bot.event
 async def on_ready():
@@ -231,6 +232,38 @@ async def penguin():
     """Shows the user a random penguin picture"""
     info = requests.get('http://penguin.wtf')
     await bot.say(info.content.decode('ascii'))
+
+
+@bot.command()
+async def imgur(*text: str):
+    if text == ():
+        rand = random.randint(0, 59)  # 60 results generated per page
+        items = imgurclient.gallery_random(page=0)
+        await bot.say('Random image')
+        await bot.say(items[rand].link)
+
+    elif text[0] == "search":
+        items = imgurclient.gallery_search(" ".join(text[1:len(text)]), advanced=None, sort='time', page=0)
+        if len(items) < 1:
+            await bot.say("Your search gave no results")
+        else:
+            await bot.say(items[0].link)
+    elif text[0] != ():
+        try:
+            if text[1] == 'top':
+                imgsort = 'top'
+            elif text[1] == 'new':
+                imgsort = 'time'
+            else:
+                await bot.say('Only top or new is a valid subcommand')
+                return
+            items = imgurclient.subreddit_gallery(text[0], sort=imgsort, window='day', page=0)
+            if len(imgsort) < 3:
+                await bot.say('This subreddit section does not exist, try funny')
+            else:
+                await bot.say('{} {} {}'.format(items[0].link, items[1].link, items[2].link))
+        except:
+            await bot.say('Inform Caffy of the error')
 
 
 async def my_background_task():
