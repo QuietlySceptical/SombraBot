@@ -31,8 +31,9 @@ async def on_message(message):
     if message.content.startswith('Hello Sombra'):
         msg = 'Hello {0.author.mention}'.format(message)
         await bot.send_message(message.channel, msg)
+
     elif message.content.startswith('Sombra'):
-        msg = 'You called for me?'.format(message)
+        msg = 'You called for me?'
         await bot.send_message(message.channel, msg)
 
     elif 'oberwath' in message.content.lower():
@@ -129,7 +130,7 @@ async def hug(member: discord.Member):
 @bot.command()
 async def owquick(username: str):
     """Overwatch Quick Play stats for a given player
-    e.g. -owquick Hanzo#1234"""
+    e.g. .owquick Hanzo#1234"""
     api_url = 'https://owapi.net/api/v3/u/{0}/stats'
     battlenet = username.replace('#', '-')
     headers = {'User-agent': 'SombraBot'}
@@ -170,10 +171,10 @@ async def owquick(username: str):
                           damage_done_avg, deaths_avg, time_spent_on_fire_avg))
 
 
-@bot.command(description='Average player stats for Overwatch user')
+@bot.command()
 async def owcomp(username: str):
     """Overwatch Competitive stats for a given player
-        e.g. -owcomp McCree#1234"""
+        e.g. .owcomp McCree#1234"""
     api_url = 'https://owapi.net/api/v3/u/{0}/stats'
     battlenet = username.replace('#', '-')
     headers = {'User-agent': 'SombraBot'}
@@ -214,6 +215,23 @@ async def owcomp(username: str):
                   .format(username, comprank, games_played, win_rate, wins, losses, eliminations_avg,
                           killperdeath, healing_done_avg, offensive_assists_avg, defensive_assists_avg,
                           damage_done_avg, deaths_avg, time_spent_on_fire_avg))
+
+
+@bot.command()
+async def cat():
+    """Shows the user a random cat picture"""
+    cat_url = requests.get('http://random.cat/meow')
+    path = cat_url.json()
+
+    picture = path['file']
+    await bot.say(picture)
+
+
+@bot.command()
+async def penguin():
+    """Shows the user a random penguin picture"""
+    info = requests.get('http://penguin.wtf')
+    await bot.say(info.content.decode('ascii'))
 
 
 try:
