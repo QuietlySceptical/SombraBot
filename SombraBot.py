@@ -27,7 +27,7 @@ initial_extensions = [
 @bot.event
 async def on_ready():
     print("Logged in as {0} with ID {1}".format(bot.user.name, bot.user.id))
-    print('------')
+
 
 @bot.event
 async def on_resumed():
@@ -36,7 +36,6 @@ async def on_resumed():
 
 @bot.event
 async def on_message(message):
-    print('test')
     if message.author == client.user:
         return
 
