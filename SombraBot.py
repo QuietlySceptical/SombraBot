@@ -62,8 +62,11 @@ async def on_message(message):
         await bot.send_message(message.channel, msg)
 
     elif '@241161319821082625' in message.content:  # Sombra
-        with open('res/sombra.jpg', 'rb') as sombrapic:
-            await bot.send_file(message.channel, sombrapic)
+        try:
+            with open('res/sombra.jpg', 'rb') as sombrapic:
+                await bot.send_file(message.channel, sombrapic)
+        except FileNotFoundError:
+            log.warn("Sombra.jpg was not found in the resources folder.")
 
     elif '@146342721366392832' in message.content:  # Caffy
         msg = 'http://i.imgur.com/7JzpTQF.jpg'
