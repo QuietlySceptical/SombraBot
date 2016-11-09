@@ -344,11 +344,14 @@ async def my_background_task():
     await bot.wait_until_ready()
     counter = 0
     while not client.is_closed:
-        counter += 1
-        lines = open('data/playing.txt').read().splitlines()
-        playing = random.choice(lines)
-        await bot.change_presence(game=discord.Game(name=playing))
-        await asyncio.sleep(300)  # task runs every 120 seconds
+        try:
+            counter += 1
+            lines = open('data/playing.txt').read().splitlines()
+            playing = random.choice(lines)
+            await bot.change_presence(game=discord.Game(name=playing))
+            await asyncio.sleep(300)  # task runs every 120 seconds
+        except FileNotFoundError:
+            print("File playing.txt was not found in the data directory.")
 
 
 def load_modules():
