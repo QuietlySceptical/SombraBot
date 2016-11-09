@@ -26,9 +26,7 @@ initial_extensions = [
 
 @bot.event
 async def on_ready():
-    print('Logged in as')
-    print(bot.user.name)
-    print(bot.user.id)
+    print("Logged in as {0} with ID {1}".format(bot.user.name, bot.user.id))
     print('------')
 
 @bot.event
