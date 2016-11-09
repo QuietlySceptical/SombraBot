@@ -356,13 +356,13 @@ def load_modules():
         try:
             print('Loading module: ' + extension)
             bot.load_extension(extension)
-        except A:
-            print('Failed to load module')
-            print('A')
+        except Exception:
+            print('Failed to load module: {0}'.format(extension))
+
+load_modules()
+bot.loop.create_task(my_background_task())
 
 try:
-    load_modules()
-    bot.loop.create_task(my_background_task())
-    bot.run('token')
+    bot.run(os.environ['DISCORD_TOKEN'])
 except KeyError:
     print('Environment variable not found.')
