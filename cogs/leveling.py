@@ -1,5 +1,7 @@
+import logging
 from discord.ext import commands
 
+log = logging.getLogger(__name__)
 
 class Level:
     def __init__(self, bot):
@@ -20,4 +22,4 @@ async def join(bot):
 
 def setup(self):
     self.add_cog(Level(self))
-    print('level setup')
+    log.info('Levelling system set up complete.')
