@@ -18,7 +18,12 @@ log = logging.getLogger()
 description = '''Sombra - A Simple Discord Bot'''
 bot = commands.Bot(command_prefix='.', description=description, pm_help=True)
 client = discord.Client()
-imgurclient = ImgurClient(os.environ['IMGUR_CLIENT'], os.environ['IMGUR_SECRET'])
+
+try:
+    imgurclient = ImgurClient(os.environ['IMGUR_CLIENT'], os.environ['IMGUR_SECRET'])
+except KeyError:
+    log.warn('Environment variable not found.')
+
 
 initial_extensions = [
     'cogs.leveling'
