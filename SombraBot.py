@@ -1,18 +1,23 @@
 import asyncio
-import random
-import cogs.leveling
 import discord
+import os
+import random
 import requests
+import sys
+
 from discord.ext import commands
 from imgurpython import ImgurClient
 
+try:
+    import cogs.leveling
+except ImportError as error:
+    sys.exit("ERROR: Missing dependency: {0}".format(error))
+
+
 description = '''Sombra - A Simple Discord Bot'''
-
-bot = commands.Bot(command_prefix='.',
-                   description=description, pm_help=True)
-
+bot = commands.Bot(command_prefix='.', description=description, pm_help=True)
 client = discord.Client()
-imgurclient = ImgurClient('client id', 'client secret')
+imgurclient = ImgurClient(os.environ['IMGUR_CLIENT'], os.environ['IMGUR_SECRET'])
 
 initial_extensions = [
     'cogs.leveling'
