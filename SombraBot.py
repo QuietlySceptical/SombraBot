@@ -35,7 +35,7 @@ async def on_resumed():
     log.info('Sombra resumed...')
 
 
-@bot.event
+@client.event
 async def on_message(message):
     if message.author == client.user:
         return
