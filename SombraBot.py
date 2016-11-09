@@ -138,6 +138,8 @@ async def hug(member: discord.Member):
         message = '(っಠ‿ಠ)っ ' + name
     elif hug == 3:
         message = '(づ￣ ³￣)づ ' + name
+    else:
+        message = "Oops, I can't pick a random number."
     await bot.say(message)
 
 
