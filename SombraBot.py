@@ -14,7 +14,7 @@ try:
 except ImportError as error:
     sys.exit("ERROR: Missing dependency: {0}".format(error))
 
-
+log = logging.getLogger()
 description = '''Sombra - A Simple Discord Bot'''
 bot = commands.Bot(command_prefix='.', description=description, pm_help=True)
 client = discord.Client()
@@ -27,12 +27,12 @@ initial_extensions = [
 
 @bot.event
 async def on_ready():
-    print("Logged in as {0} with ID {1}".format(bot.user.name, bot.user.id))
+    log.info("Logged in as {0} with ID {1}".format(bot.user.name, bot.user.id))
 
 
 @bot.event
 async def on_resumed():
-    print('Sombra resumed...')
+    log.info('Sombra resumed...')
 
 
 @bot.event
@@ -151,7 +151,7 @@ async def owquick(username: str):
 
     status = requests.get(api_url.format(battlenet), headers=headers)
     data = status.json()
-    print(status)
+    log.info("JSON status: %s" % status)
 
     prestige = data['eu']['stats']['quickplay']['overall_stats']['prestige']
     level = data['eu']['stats']['quickplay']['overall_stats']['level']
@@ -195,7 +195,7 @@ async def owcomp(username: str):
 
     status = requests.get(api_url.format(battlenet), headers=headers)
     data = status.json()
-    print(status)
+    log.info("JSON status: %s" % status)
 
     comprank = data['eu']['stats']['competitive']['overall_stats']['comprank']
     games_played = data['eu']['stats']['competitive']['game_stats']['games_played']
@@ -351,23 +351,32 @@ async def change_presence_task():
             await bot.change_presence(game=discord.Game(name=playing))
             await asyncio.sleep(300)  # task runs every 120 seconds
         except FileNotFoundError:
-            print("File playing.txt was not found in the data directory.")
+            log.warn("File playing.txt was not found in the data directory.")
 
 
 def load_modules():
     for extension in initial_extensions:
         try:
-            print('Loading module: ' + extension)
+            log.info("Loading module: %s" % extension)
             bot.load_extension(extension)
         except Exception:
-            print('Failed to load module: {0}'.format(extension))
+            log.warn("Failed to load module: %s" % extension)
 
 
 if __name__ == '__main__':
+    formatter = logging.Formatter("%(asctime)s [%(name)s] %(levelname)s: %(message)s")
+    consoleHandler = logging.StreamHandler()
+    consoleHandler.setFormatter(formatter)
+    log.addHandler(consoleHandler)
+
+    logging.getLogger("discord").setLevel(logging.WARN)
+    log.setLevel(logging.INFO)
+
     load_modules()
     bot.loop.create_task(change_presence_task())
 
     try:
         bot.run(os.environ['DISCORD_TOKEN'])
     except KeyError:
-        print('Environment variable not found.')
+        log.warn('Environment variable not found.')
+
