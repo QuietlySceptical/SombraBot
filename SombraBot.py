@@ -1,5 +1,6 @@
 import asyncio
 import discord
+import logging
 import os
 import random
 import requests
@@ -361,10 +362,12 @@ def load_modules():
         except Exception:
             print('Failed to load module: {0}'.format(extension))
 
-load_modules()
-bot.loop.create_task(change_presence_task())
 
-try:
-    bot.run(os.environ['DISCORD_TOKEN'])
-except KeyError:
-    print('Environment variable not found.')
+if __name__ == '__main__':
+    load_modules()
+    bot.loop.create_task(change_presence_task())
+
+    try:
+        bot.run(os.environ['DISCORD_TOKEN'])
+    except KeyError:
+        print('Environment variable not found.')
