@@ -340,7 +340,7 @@ async def slow_deletion(messages):
         await asyncio.sleep(1.5)
 
 
-async def my_background_task():
+async def change_presence_task():
     await bot.wait_until_ready()
     counter = 0
     while not client.is_closed:
@@ -363,7 +363,7 @@ def load_modules():
             print('Failed to load module: {0}'.format(extension))
 
 load_modules()
-bot.loop.create_task(my_background_task())
+bot.loop.create_task(change_presence_task())
 
 try:
     bot.run(os.environ['DISCORD_TOKEN'])
