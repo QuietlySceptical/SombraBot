@@ -1,8 +1,8 @@
 import asyncio
 import random
-
-import requests
+import cogs.leveling
 import discord
+import requests
 from discord.ext import commands
 from imgurpython import ImgurClient
 
@@ -12,7 +12,12 @@ bot = commands.Bot(command_prefix='.',
                    description=description, pm_help=True)
 
 client = discord.Client()
-imgurclient = ImgurClient('id', 'secret')
+imgurclient = ImgurClient('client id', 'client secret')
+
+initial_extensions = [
+    'cogs.leveling'
+]
+
 
 @bot.event
 async def on_ready():
@@ -20,6 +25,10 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+
+@bot.event
+async def on_resumed():
+    print('Sombra resumed...')
 
 
 @bot.event
@@ -42,7 +51,7 @@ async def on_message(message):
 
     elif '@everyone' in message.content:
         msg = 'Hey kids, anyone want to buy some drugs?'
-        await client.send_message(message.channel, msg)
+        await bot.send_message(message.channel, msg)
 
     elif '@241161319821082625' in message.content:  # Sombra
         with open('res/sombra.jpg', 'rb') as sombrapic:
@@ -282,6 +291,50 @@ async def imgnew(*text: str):
             await bot.say(items[0].link)
 
 
+@bot.command(pass_context=True)
+async def clear(ctx, number: int):
+
+    channel = ctx.message.channel
+    author = ctx.message.author
+    server = author.server
+    is_bot = bot.user.bot
+
+    has_permissions = channel.permissions_for(server.me).manage_messages
+
+    to_delete= []
+
+    if not has_permissions:
+        await bot.say('Not allowed to delete messages')
+        return
+    async for message in bot.logs_from(channel, limit=number + 1):
+        to_delete.append(message)
+
+    if is_bot:
+        await mass_purge(to_delete)
+    else:
+        await slow_deletion(to_delete)
+
+
+async def mass_purge(messages):
+    while messages:
+        if len(messages) > 1:
+            await bot.delete_messages(messages[:100])
+            messages = messages[100:]
+        else:
+            await bot.delete_message(messages[0])
+            messages = []
+        await asyncio.sleep(1.5)
+
+
+async def slow_deletion(messages):
+    for message in messages:
+        try:
+            await bot.delete_message(message)
+        except:
+            pass
+        await asyncio.sleep(1.5)
+
+
 async def my_background_task():
     await bot.wait_until_ready()
     counter = 0
@@ -290,9 +343,20 @@ async def my_background_task():
         lines = open('data/playing.txt').read().splitlines()
         playing = random.choice(lines)
         await bot.change_presence(game=discord.Game(name=playing))
-        await asyncio.sleep(120)  # task runs every 120 seconds
+        await asyncio.sleep(300)  # task runs every 120 seconds
+
+
+def load_modules():
+    for extension in initial_extensions:
+        try:
+            print('Loading module: ' + extension)
+            bot.load_extension(extension)
+        except A:
+            print('Failed to load module')
+            print('A')
 
 try:
+    load_modules()
     bot.loop.create_task(my_background_task())
     bot.run('token')
 except KeyError:
