@@ -40,7 +40,7 @@ async def on_resumed():
     log.info('Sombra resumed...')
 
 
-@client.event
+@bot.event
 async def on_message(message):
     if message.author == client.user:
         return
@@ -384,4 +384,3 @@ if __name__ == '__main__':
         bot.run(os.environ['DISCORD_TOKEN'])
     except KeyError:
         log.warn('Environment variable not found.')
-
