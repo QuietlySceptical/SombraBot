@@ -7,10 +7,10 @@ import requests
 import sys
 
 from discord.ext import commands
-from imgurpython import ImgurClient
 
 try:
     import cogs.leveling
+    import cogs.image
 except ImportError as error:
     sys.exit("ERROR: Missing dependency: {0}".format(error))
 
@@ -19,14 +19,9 @@ description = '''Sombra - A Simple Discord Bot'''
 bot = commands.Bot(command_prefix='.', description=description, pm_help=True)
 client = discord.Client()
 
-try:
-    imgurclient = ImgurClient(os.environ['IMGUR_CLIENT'], os.environ['IMGUR_SECRET'])
-except KeyError:
-    log.warn('Environment variable not found.')
-
-
 initial_extensions = [
-    'cogs.leveling'
+    'cogs.leveling',
+    'cogs.image'
 ]
 
 
@@ -237,71 +232,6 @@ async def owcomp(username: str):
                   .format(username, comprank, games_played, win_rate, wins, losses, eliminations_avg,
                           killperdeath, healing_done_avg, offensive_assists_avg, defensive_assists_avg,
                           damage_done_avg, deaths_avg, time_spent_on_fire_avg))
-
-
-@bot.command()
-async def cat():
-    """Shows the user a random cat picture"""
-    cat_url = requests.get('http://random.cat/meow')
-    path = cat_url.json()
-
-    picture = path['file']
-    await bot.say(picture)
-
-
-@bot.command()
-async def penguin():
-    """Shows the user a random penguin picture"""
-    info = requests.get('http://penguin.wtf')
-    await bot.say(info.content.decode('ascii'))
-
-
-@bot.command()
-async def imgrand():
-    """Shows the user a random image from imgur"""
-    rand = random.randint(0, 59)  # 60 results generated per page
-    items = imgurclient.gallery_random(page=0)
-    await bot.say(items[rand].link)
-
-
-@bot.command()
-async def imgsearch(*text: str):
-    """Allows the user to search for an image from imgur"""
-    rand = random.randint(0, 59)
-    if text == ():
-        await bot.say('Please enter a search term')
-    elif text[0] != ():
-        items = imgurclient.gallery_search(" ".join(text[0:len(text)]), advanced=None, sort='viral', window='all', page=0)
-        if len(items) < 1:
-            await bot.say('Your search gave no results')
-        else:
-            await bot.say(items[rand].link)
-
-
-@bot.command()
-async def imgtop(*text: str):
-    """Shows the top image from a specified subrreddit"""
-    if text == ():
-        await bot.say('Please enter a subbreddit')
-    elif text[0] != ():
-        items = imgurclient.subreddit_gallery(" ".join(text[0:len(text)]), sort='top', window='day', page=0)
-        if len(items) < 1:
-            await bot.say('This subreddit section does not exist, try funny')
-        else:
-            await bot.say(items[0].link)
-
-
-@bot.command()
-async def imgnew(*text: str):
-    """Shows the newest image from a specified subreddit"""
-    if text == ():
-        await bot.say('Please enter a subbreddit')
-    elif text[0] != ():
-        items = imgurclient.subreddit_gallery(" ".join(text[0:len(text)]), sort='time', window='day', page=0)
-        if len(items) < 1:
-            await bot.say('This subreddit section does not exist, try funny')
-        else:
-            await bot.say(items[0].link)
 
 
 @bot.command(pass_context=True)
