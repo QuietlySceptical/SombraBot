@@ -44,7 +44,6 @@ async def on_resumed():
 
 @bot.event
 async def on_message(message):
-    print('test')
     if message.author == client.user:
         return
 
