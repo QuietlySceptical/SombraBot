@@ -12,6 +12,8 @@ try:
     import cogs.leveling
     import cogs.image
     import cogs.mod
+    import cogs.chance
+
 except ImportError as error:
     sys.exit("ERROR: Missing dependency: {0}".format(error))
 
@@ -23,7 +25,8 @@ client = discord.Client()
 initial_extensions = [
     'cogs.leveling',
     'cogs.image',
-    'cogs.mod'
+    'cogs.mod',
+    'cogs.chance'
 ]
 
 
@@ -82,12 +85,6 @@ async def add(left: int, right: int):
 
 
 @bot.command()
-async def choose(*choices: str):
-    """Chooses between items in a list"""
-    await bot.say(random.choice(choices))
-
-
-@bot.command()
 async def compliment():
     """Gives a random compliment"""
     lines = open('data/compliment.txt').read().splitlines()
@@ -101,31 +98,9 @@ async def insult():
     await  bot.say(random.choice(lines))
 
 
-@bot.command()
-async def eightball(*message: str):
-    """Ask a question and the EightBall will give an answer"""
-    lines = open('data/eightball.txt').read().splitlines()
-    await bot.say('So you want to know: ' + ' ' .join(map(str, message)) + '\n ...Let me look into the future')
-    await asyncio.sleep(3)
-    await bot.say(random.choice(lines))
-
-
 @bot.command(description='Response to porn')
 async def porn():
     await bot.say('Look for it yourself!')
-
-
-@bot.command()
-async def flip():
-    """Flips a coin, resulting in Heads or Tails"""
-    outcome = random.randint(0, 1)
-    if outcome == 0:
-        outcome = 'Heads'
-    else:
-        outcome = 'Tails'
-    await bot.say('Flipping the coin...')
-    await asyncio.sleep(3)
-    await bot.say('The coin shows, ' + outcome)
 
 
 @bot.command()
@@ -272,6 +247,6 @@ if __name__ == '__main__':
     bot.loop.create_task(change_presence_task())
 
     try:
-        bot.run(os.environ['DISCORD_TOKEN'])
+        bot.run('MjQxMTYxMzE5ODIxMDgyNjI1.CvzZSA.YCR3G_edjEh53jFcieYTjrzb9Sw')
     except KeyError:
         log.warn('Environment variable not found.')
