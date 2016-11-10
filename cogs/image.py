@@ -41,7 +41,7 @@ class Image:
         await self.bot.say(items[rand].link)
 
     @commands.command(pass_context=True)
-    async def imgsearch(self, *text: str):
+    async def imgsearch (self, ctx, *text: str):
         """Allows the user to search for an image from imgur"""
         rand = random.randint(0, 59)
         if text == ():
@@ -55,7 +55,7 @@ class Image:
                 await self.bot.say(items[rand].link)
 
     @commands.command(pass_context=True)
-    async def imgtop(self, *text: str):
+    async def imgtop(self, ctx, *text: str):
         """Shows the top image from a specified subrreddit"""
         if text == ():
             await self.bot.say('Please enter a subbreddit')
@@ -67,7 +67,7 @@ class Image:
                 await self.bot.say(items[0].link)
 
     @commands.command(pass_context=True)
-    async def imgnew(self, *text: str):
+    async def imgnew(self, ctx, *text: str):
         """Shows the newest image from a specified subreddit"""
         if text == ():
             await self.bot.say('Please enter a subbreddit')
