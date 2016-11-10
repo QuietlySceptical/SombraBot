@@ -1,6 +1,8 @@
 import logging
 
 from urllib.request import Request, urlopen
+
+import requests
 from discord.ext import commands
 
 log = logging.getLogger(__name__)
@@ -49,7 +51,7 @@ class Overwatch:
                            'Avg Deaths: {11}\n'
                            'Avg Time on Fire: {12}\n'
                            '```'
-                           .format(name, prestige, level, time_played, wins, eliminations_avg,
+                           .format(battlenet, prestige, level, time_played, wins, eliminations_avg,
                                    killsperdeath, healing_done_avg, offensive_assists_avg, defensive_assists_avg,
                                    damage_done_avg, deaths_avg, time_spent_on_fire_avg))
 
