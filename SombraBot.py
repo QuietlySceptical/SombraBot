@@ -11,6 +11,7 @@ from discord.ext import commands
 try:
     import cogs.leveling
     import cogs.image
+    import cogs.mod
 except ImportError as error:
     sys.exit("ERROR: Missing dependency: {0}".format(error))
 
@@ -21,7 +22,8 @@ client = discord.Client()
 
 initial_extensions = [
     'cogs.leveling',
-    'cogs.image'
+    'cogs.image',
+    'cogs.mod'
 ]
 
 
@@ -232,50 +234,6 @@ async def owcomp(username: str):
                   .format(username, comprank, games_played, win_rate, wins, losses, eliminations_avg,
                           killperdeath, healing_done_avg, offensive_assists_avg, defensive_assists_avg,
                           damage_done_avg, deaths_avg, time_spent_on_fire_avg))
-
-
-@bot.command(pass_context=True)
-async def clear(ctx, number: int):
-
-    channel = ctx.message.channel
-    author = ctx.message.author
-    server = author.server
-    is_bot = bot.user.bot
-
-    has_permissions = channel.permissions_for(server.me).manage_messages
-
-    to_delete= []
-
-    if not has_permissions:
-        await bot.say('Not allowed to delete messages')
-        return
-    async for message in bot.logs_from(channel, limit=number + 1):
-        to_delete.append(message)
-
-    if is_bot:
-        await mass_purge(to_delete)
-    else:
-        await slow_deletion(to_delete)
-
-
-async def mass_purge(messages):
-    while messages:
-        if len(messages) > 1:
-            await bot.delete_messages(messages[:100])
-            messages = messages[100:]
-        else:
-            await bot.delete_message(messages[0])
-            messages = []
-        await asyncio.sleep(1.5)
-
-
-async def slow_deletion(messages):
-    for message in messages:
-        try:
-            await bot.delete_message(message)
-        except:
-            pass
-        await asyncio.sleep(1.5)
 
 
 async def change_presence_task():
