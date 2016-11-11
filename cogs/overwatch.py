@@ -1,7 +1,5 @@
 import logging
 
-from urllib.request import Request, urlopen
-
 import requests
 from discord.ext import commands
 
@@ -61,12 +59,9 @@ class Overwatch:
             e.g. .owcomp McCree#1234"""
         api_url = 'https://owapi.net/api/v3/u/{0}/stats'
         battlenet_for_api = battlenet.replace("#", "-")
+        headers = {'User-agent': 'SombraBot'}
 
-        print(battlenet_for_api)
-
-        req = Request(api_url.format(battlenet_for_api))
-        req.add_header('User-agent', 'SombraBot')
-        status = urlopen(req).read()
+        status = requests.get(api_url.format(battlenet_for_api), headers=headers)
         data = status.json()
         log.info("JSON status: %s" % status)
 

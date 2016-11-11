@@ -41,7 +41,7 @@ class Image:
         await self.bot.say(items[rand].link)
 
     @commands.command(pass_context=True)
-    async def imgsearch (self, ctx, *text: str):
+    async def imgsearch(self, ctx, *text: str):
         """Allows the user to search for an image from imgur"""
         rand = random.randint(0, 59)
         if text == ():
