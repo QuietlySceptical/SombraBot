@@ -12,6 +12,7 @@ try:
     import cogs.leveling
     import cogs.image
     import cogs.mod
+    import cogs.social
 except ImportError as error:
     sys.exit("ERROR: Missing dependency: {0}".format(error))
 
@@ -23,7 +24,8 @@ client = discord.Client()
 initial_extensions = [
     'cogs.leveling',
     'cogs.image',
-    'cogs.mod'
+    'cogs.mod',
+    'cogs.social'
 ]
 
 
@@ -86,21 +88,6 @@ async def choose(*choices: str):
     """Chooses between items in a list"""
     await bot.say(random.choice(choices))
 
-
-@bot.command()
-async def compliment():
-    """Gives a random compliment"""
-    lines = open('data/compliment.txt').read().splitlines()
-    await  bot.say(random.choice(lines))
-
-
-@bot.command()
-async def insult():
-    """Gives a random insult"""
-    lines = open('data/insult.txt').read().splitlines()
-    await  bot.say(random.choice(lines))
-
-
 @bot.command()
 async def eightball(*message: str):
     """Ask a question and the EightBall will give an answer"""
@@ -126,24 +113,6 @@ async def flip():
     await bot.say('Flipping the coin...')
     await asyncio.sleep(3)
     await bot.say('The coin shows, ' + outcome)
-
-
-@bot.command()
-async def hug(member: discord.Member):
-    """Have a hug"""
-    name = member.name
-    hug = random.randrange(0, 3)
-    if hug == 0:
-        message = '(づ｡◕‿‿◕｡)づ ' + name
-    elif hug == 1:
-        message = '(っ˘̩╭╮˘̩)っ ' + name
-    elif hug == 2:
-        message = '(っಠ‿ಠ)っ ' + name
-    elif hug == 3:
-        message = '(づ￣ ³￣)づ ' + name
-    else:
-        message = "Oops, I can't pick a random number."
-    await bot.say(message)
 
 
 @bot.command()
