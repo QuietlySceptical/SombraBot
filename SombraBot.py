@@ -12,6 +12,7 @@ try:
     import cogs.image
     import cogs.mod
     import cogs.chance
+    import cogs.social
 
 except ImportError as error:
     sys.exit("ERROR: Missing dependency: {0}".format(error))
@@ -26,7 +27,8 @@ initial_extensions = [
     'cogs.overwatch',
     'cogs.image',
     'cogs.mod',
-    'cogs.chance'
+    'cogs.chance',
+    'cogs.social'
 ]
 
 
@@ -84,42 +86,9 @@ async def add(left: int, right: int):
     await bot.say(left + right)
 
 
-@bot.command()
-async def compliment():
-    """Gives a random compliment"""
-    lines = open('data/compliment.txt').read().splitlines()
-    await  bot.say(random.choice(lines))
-
-
-@bot.command()
-async def insult():
-    """Gives a random insult"""
-    lines = open('data/insult.txt').read().splitlines()
-    await  bot.say(random.choice(lines))
-
-
 @bot.command(description='Response to porn')
 async def porn():
     await bot.say('Look for it yourself!')
-
-
-@bot.command()
-async def hug(member: discord.Member):
-    """Have a hug"""
-    name = member.name
-    hug = random.randrange(0, 3)
-    if hug == 0:
-        message = '(づ｡◕‿‿◕｡)づ ' + name
-    elif hug == 1:
-        message = '(っ˘̩╭╮˘̩)っ ' + name
-    elif hug == 2:
-        message = '(っಠ‿ಠ)っ ' + name
-    elif hug == 3:
-        message = '(づ￣ ³￣)づ ' + name
-    else:
-        message = "Oops, I can't pick a random number."
-    await bot.say(message)
-
 
 async def change_presence_task():
     await bot.wait_until_ready()
@@ -157,6 +126,6 @@ if __name__ == '__main__':
     bot.loop.create_task(change_presence_task())
 
     try:
-        bot.run('MjQxMTYxMzE5ODIxMDgyNjI1.CvzZSA.YCR3G_edjEh53jFcieYTjrzb9Sw')
+        bot.run('Discord Token')
     except KeyError:
         log.warn('Environment variable not found.')
