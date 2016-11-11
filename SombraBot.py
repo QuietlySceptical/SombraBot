@@ -86,6 +86,20 @@ async def add(left: int, right: int):
     await bot.say(left + right)
 
 
+@bot.command()
+async def compliment():
+    """Gives a random compliment"""
+    lines = open('data/compliment.txt').read().splitlines()
+    await  bot.say(random.choice(lines))
+
+
+@bot.command()
+async def insult():
+    """Gives a random insult"""
+    lines = open('data/insult.txt').read().splitlines()
+    await  bot.say(random.choice(lines))
+
+
 @bot.command(description='Response to porn')
 async def porn():
     await bot.say('Look for it yourself!')
