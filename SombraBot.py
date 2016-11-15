@@ -3,6 +3,7 @@ import discord
 import logging
 import random
 import sys
+import time
 
 from discord.ext import commands
 
@@ -35,6 +36,7 @@ initial_extensions = [
 @bot.event
 async def on_ready():
     log.info("Logged in as {0} with ID {1}".format(bot.user.name, bot.user.id))
+    bot.start_time = time.time()
 
 
 @bot.event
@@ -89,6 +91,13 @@ async def add(left: int, right: int):
 @bot.command(description='Response to porn')
 async def porn():
     await bot.say('Look for it yourself!')
+
+
+@bot.command()
+async def reverse(*, text: str):
+    to_reverse = text
+    await bot.say(str(to_reverse)[::-1])
+
 
 async def change_presence_task():
     await bot.wait_until_ready()
