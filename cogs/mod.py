@@ -1,4 +1,5 @@
 import logging
+import time
 from discord.ext import commands
 
 log = logging.getLogger(__name__)
@@ -7,6 +8,31 @@ log = logging.getLogger(__name__)
 class Mod:
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command(pass_context=True)
+    async def uptime(self):
+        """Displays bot's total running time"""
+
+        seconds = int(time.time() - self.bot.start_time)
+        minutes, seconds = divmod(seconds, 60)
+        hours, minutes = divmod(minutes, 60)
+        days, hours = divmod(hours, 24)
+
+        def parse_time(time, time_type):
+            if time > 1:
+                return ' ' + str(time) + ' ' + time_type
+            elif time == 1:
+                return ' ' + str(time) + ' ' + time_type[:-1]
+            else:
+                return ''
+
+        seconds = parse_time(seconds, 'seconds.')
+        minutes = parse_time(minutes, 'minutes,')
+        hours = parse_time(hours, 'hours,')
+        days = parse_time(days, 'days,')
+
+        output = "I have been up for{}{}{}{}".format(days, hours, minutes, seconds)
+        await self.bot.say(output)
 
     @commands.command(pass_context=True)
     async def clear(self, ctx, number: int):
