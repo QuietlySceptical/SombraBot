@@ -18,6 +18,9 @@ A simple discord bot made for use on a personal discord server.
 - .imgsearch - Searches Imgur for the given search term
 - .imgtop - Top image from a given subreddit gallery
 - .imgnew - Newest image from a given subreddit gallery
+- .reverse - Reverses a given string
+- .clear - Clears a specified amount of messages
+- .uptime - Bot will respond with the time it has been up/active
 
 # Requirements
 - [discord.py](https://github.com/Rapptz/discord.py)
