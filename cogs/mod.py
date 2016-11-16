@@ -1,5 +1,7 @@
 import logging
 import time
+
+import discord
 from discord.ext import commands
 
 log = logging.getLogger(__name__)
@@ -33,6 +35,19 @@ class Mod:
 
         output = "I have been up for{}{}{}{}".format(days, hours, minutes, seconds)
         await self.bot.say(output)
+
+    @commands.command(pass_context=True)
+    async def info(self, ctx, member : discord.Member = None):
+        if member == None:
+            member = ctx.message.author
+        await self.bot.say('```xl\n' +
+                           'Name: {0.name}\n'.format(member) +
+                           'Joined Server: {0.joined_at}\n'.format(member) +
+                           'ID: {0.id}\n'.format(member) +
+                           'Has existed since: {0.created_at}\n'.format(member) +
+                           'Bot?: {0.bot}\n'.format(member) +
+                           '```' +
+                           '\n{0.avatar_url}'.format(member))
 
     @commands.command(pass_context=True)
     async def clear(self, ctx, number: int):
