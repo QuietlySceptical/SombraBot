@@ -8,12 +8,12 @@ import time
 from discord.ext import commands
 
 try:
-    import cogs.leveling
     import cogs.overwatch
     import cogs.image
     import cogs.mod
     import cogs.chance
     import cogs.social
+    import cogs.music
 
 except ImportError as error:
     sys.exit("ERROR: Missing dependency: {0}".format(error))
@@ -24,12 +24,12 @@ bot = commands.Bot(command_prefix='.', description=description, pm_help=True)
 client = discord.Client()
 
 initial_extensions = [
-    'cogs.leveling',
     'cogs.overwatch',
     'cogs.image',
     'cogs.mod',
     'cogs.chance',
-    'cogs.social'
+    'cogs.social',
+    'cogs.music'
 ]
 
 
@@ -42,6 +42,22 @@ async def on_ready():
 @bot.event
 async def on_resumed():
     log.info('Sombra resumed...')
+
+
+@bot.event
+async def on_command_error(error, ctx):
+    if isinstance(error, commands.NoPrivateMessage):
+        await bot.send_message(ctx.message.author,
+                               '[ERROR: NoPrivateMessage] Sorry. This command cannot be used in private messages.')
+    elif isinstance(error, commands.DisabledCommand):
+        await bot.send_message(ctx.message.channel,
+                               '[ERROR: DisabledCommand] Sorry. This command is disabled and can\'t be used.')
+    elif isinstance(error, commands.CheckFailure):
+        await bot.send_message(ctx.message.channel,
+                               '[ERROR: CheckFailure] Sorry. You don\'t have permission to run this command.')
+    elif isinstance(error, commands.CommandNotFound):
+        await bot.send_message(ctx.message.channel,
+                               '[ERROR: CmdNotFound] Sorry. The comand your requested doesn\'t exist.')
 
 
 @bot.event
