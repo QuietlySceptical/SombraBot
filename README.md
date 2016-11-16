@@ -21,8 +21,10 @@ A simple discord bot made for use on a personal discord server.
 - .reverse - Reverses a given string
 - .clear - Clears a specified amount of messages
 - .uptime - Bot will respond with the time it has been up/active
+- .info - Mention a user to get some information returned
 
 # Requirements
 - [discord.py](https://github.com/Rapptz/discord.py)
 - [imgurpython](https://github.com/Imgur/imgurpython)
+- [youtube-dl](https://github.com/rg3/youtube-dl)
 
