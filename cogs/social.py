@@ -40,6 +40,10 @@ class Social:
             message = "Oops, I can't pick a random number."
         await self.bot.say(message)
 
+    @commands.command(pass_context=True)
+    async def google(self, ctx, *text: str):
+        await self.bot.say('http://lmgtfy.com/?q=' + '+'.join(text))
+
 
 def setup(bot):
     bot.add_cog(Social(bot))
