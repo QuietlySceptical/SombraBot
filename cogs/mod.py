@@ -1,6 +1,7 @@
 import logging
 import time
 
+import aiohttp
 import discord
 from discord.ext import commands
 
@@ -48,6 +49,13 @@ class Mod:
                            'Bot?: {0.bot}\n'.format(member) +
                            '```' +
                            '\n{0.avatar_url}'.format(member))
+
+    @commands.command(pass_context=True)
+    async def avatar(self):
+        with open('res/profile.jpg', 'rb') as image:
+            image = image.read()
+            await self.bot.edit_profile(avatar=image)
+            await self.bot.say("My avatar has been changed!")
 
     @commands.command(pass_context=True)
     async def clear(self, ctx, number: int):
