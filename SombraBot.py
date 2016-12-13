@@ -8,6 +8,7 @@ import time
 from discord.ext import commands
 
 try:
+    import cogs.leveling
     import cogs.overwatch
     import cogs.image
     import cogs.mod
@@ -20,10 +21,11 @@ except ImportError as error:
 
 log = logging.getLogger()
 description = '''Sombra - A Simple Discord Bot'''
-bot = commands.Bot(command_prefix='.', description=description, pm_help=True)
+bot = commands.Bot(command_prefix='/', description=description, pm_help=True)
 client = discord.Client()
 
 initial_extensions = [
+    'cogs.leveling',
     'cogs.overwatch',
     'cogs.image',
     'cogs.mod',
@@ -89,10 +91,10 @@ async def on_message(message):
             log.warn("Sombra.jpg was not found in the resources folder.")
 
     elif '@146342721366392832' in message.content:  # Caffy
-        msg = 'http://i.imgur.com/7JzpTQF.jpg'
+        msg = ' http://gph.is/1h4mbMs?tc=1'
         await bot.send_message(message.channel, msg)
     elif '@190912312427675649' in message.content:  # Thirith
-        msg = 'I heard you like Guys & Dolls?'
+        msg = 'Did you know he likes dressing up as Santa?'
         await bot.send_message(message.channel, msg)
 
     await bot.process_commands(message)
