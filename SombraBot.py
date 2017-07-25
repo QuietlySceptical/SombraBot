@@ -1,10 +1,10 @@
 import asyncio
-import discord
 import logging
 import random
 import sys
 import time
 
+import discord
 from discord.ext import commands
 
 try:
@@ -14,7 +14,7 @@ try:
     import cogs.mod
     import cogs.chance
     import cogs.social
-    import cogs.music
+    import cogs.voice
 
 except ImportError as error:
     sys.exit("ERROR: Missing dependency: {0}".format(error))
@@ -25,13 +25,12 @@ bot = commands.Bot(command_prefix='/', description=description, pm_help=True)
 client = discord.Client()
 
 initial_extensions = [
-    'cogs.leveling',
     'cogs.overwatch',
     'cogs.image',
     'cogs.mod',
     'cogs.chance',
     'cogs.social',
-    'cogs.music'
+    'cogs.voice'
 ]
 
 
@@ -59,7 +58,7 @@ async def on_command_error(error, ctx):
                                '[ERROR: CheckFailure] Sorry. You don\'t have permission to run this command.')
     elif isinstance(error, commands.CommandNotFound):
         await bot.send_message(ctx.message.channel,
-                               '[ERROR: CmdNotFound] Sorry. The comand your requested doesn\'t exist.')
+                               '[ERROR: CmdNotFound] Sorry. The command your requested doesn\'t exist.')
 
 
 @bot.event
@@ -68,33 +67,27 @@ async def on_message(message):
         return
 
     if message.content.startswith('Hello Sombra'):
-        msg = 'Hello {0.author.mention}'.format(message)
+        msg = 'Hello {0.author.mention'.format(message)
         await bot.send_message(message.channel, msg)
 
-    elif message.content.startswith('Sombra'):
+    elif message.content.startswith('Rick'):
         msg = 'You called for me?'
         await bot.send_message(message.channel, msg)
 
     elif 'oberwath' in message.content.lower():
-        msg = 'Darling, call it Overwatch'
+        msg = 'Not Today! Today you call it Overwatch you piece of shit!'
         await bot.send_message(message.channel, msg)
 
     elif '@everyone' in message.content:
-        msg = 'Hey kids, anyone want to buy some drugs?'
+        msg = "Y'know, you kids, you should buy some drugs!"
         await bot.send_message(message.channel, msg)
 
     elif '@241161319821082625' in message.content:  # Sombra
-        try:
-            with open('res/sombra.jpg', 'rb') as sombrapic:
-                await bot.send_file(message.channel, sombrapic)
-        except FileNotFoundError:
-            log.warn("Sombra.jpg was not found in the resources folder.")
-
-    elif '@146342721366392832' in message.content:  # Caffy
-        msg = ' http://gph.is/1h4mbMs?tc=1'
+        msg = "Why would you tag a bot?"
         await bot.send_message(message.channel, msg)
+
     elif '@190912312427675649' in message.content:  # Thirith
-        msg = 'Did you know he likes dressing up as Santa?'
+        msg = "I dare you to ask if he's in a play"
         await bot.send_message(message.channel, msg)
 
     await bot.process_commands(message)
@@ -153,6 +146,6 @@ if __name__ == '__main__':
     bot.loop.create_task(change_presence_task())
 
     try:
-        bot.run('Discord Token')
+        bot.run('DISCORD_TOKEN')
     except KeyError:
         log.warn('Environment variable not found.')

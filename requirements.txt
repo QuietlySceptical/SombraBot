@@ -7,3 +7,4 @@ imgurpython==1.1.7
 multidict==2.1.2
 requests==2.11.1
 websockets==3.2
+cffi==1.6.0

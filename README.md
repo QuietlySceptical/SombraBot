@@ -13,7 +13,6 @@ A simple discord bot made for use on a personal discord server.
 - /owquick - Quick Play stats for a given Battlenet ID e.g. .owquick Hanzo#1234
 - /owcomp - Competitive stats fir a given Battlenet ID
 - /cat - Posts a random cat image
-- /penguin - Posts a random penguin image
 - /imgrand - Random Image from Imgur
 - /imgsearch - Searches Imgur for the given search term
 - /imgtop - Top image from a given subreddit gallery

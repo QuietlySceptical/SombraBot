@@ -1,9 +1,8 @@
 import logging
 import time
-
-import aiohttp
 import discord
 from discord.ext import commands
+from utils import checks
 
 log = logging.getLogger(__name__)
 
@@ -51,13 +50,22 @@ class Mod:
                            '\n{0.avatar_url}'.format(member))
 
     @commands.command(pass_context=True)
+    @checks.mod_or_permissions(administrator=True)
     async def avatar(self):
-        with open('res/profile.jpg', 'rb') as image:
+        with open('res/skull.png', 'rb') as image:
             image = image.read()
             await self.bot.edit_profile(avatar=image)
-            await self.bot.say("My avatar has been changed!")
+            await self.bot.say('My avatar had been changed')
 
     @commands.command(pass_context=True)
+    @checks.mod_or_permissions(administrator=True)
+    async def username(self):
+        name = "Sombra"
+        await self.bot.edit_profile(username=name)
+        await self.bot.say("My name has been changed!")
+
+    @commands.command(pass_context=True)
+    @checks.mod_or_permissions(administrator=True)
     async def clear(self, ctx, number: int):
 
         channel = ctx.message.channel

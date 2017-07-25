@@ -28,12 +28,6 @@ class Image:
         await self.bot.say(picture)
 
     @commands.command(pass_context=True)
-    async def penguin(self):
-        """Shows the user a random penguin picture"""
-        info = requests.get('http://penguin.wtf')
-        await self.bot.say(info.content.decode('ascii'))
-
-    @commands.command(pass_context=True)
     async def imgrand(self):
         """Shows the user a random image from imgur"""
         rand = random.randint(0, 59)  # 60 results generated per page
